@@ -1,11 +1,8 @@
-#! /bin/bash -i
+#This script generates a file in vcf format from plink format
+#The script also filters the vcf file by excluding individuals in a text file passed to it
 
-plink --bfile /fslhome/inwosu/fsl_groups/fslg_KauweLab/compute/ADGC1KG2014/ADGC_Combined_Data/unrelated_dataset/backup/ADGC_unrelated_newgsk --recode vcf --out /fslhome/inwosu/fsl_groups/fslg_KauweLab/compute/ADGC1KG2014/ADGC_Combined_Data/unrelated_dataset/backup/ADGC_unrelated_newgsk --threads 4
+#! /bin/bash
 
-plink --bfile ADGC_unrelated_newgsk --filter-cases --make-bed --out case_only
+plink --bfile input_fileset --recode vcf --out output_file 
 
-plink --bfile ADGC_unrelated_newgsk --filter-controls --make-bed --out controls_only
-
-plink --bfile controls_only --bmerge case_only.bed case_only.bim case_only.fam --make-bed --out merge
-
-vcftools --vcf ADGC_unrelated_newgsk_edited.vcf --out filtered --remove famList.txt --recode
+vcftools --vcf input_file.vcf --out filtered --remove exclude_list.txt --recode --recode-INFO-all
