@@ -1,6 +1,6 @@
 #This script will filter an output .vcf file from PLINK to include
 #'HIGH' variants or 'HIGH' and 'MODERATE' variants by excluding the
-#comment in the script. This script also removes the vcf header.
+#comment in the script. This script also removes the vcf metadata.
 
 #This script accepts 3 arguments: 1) The name of the .py script, 2)
 #the name of the input .vcf file, 3) the name of the output file.

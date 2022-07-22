@@ -144,28 +144,28 @@ $(document).ready(function () {
   write_tsv(gettinrTidy, outputName)
   print(&quot;Complete! Happy Tidy-ing! Next step, add 'Class' to file in second column.&quot;)
 }</code></pre>
-<p>Divide data into a test and validation set. Modify variable names as needed. The input for this was the output from the addClassToTidyTsv.py script.</p>
+<p>Divide data into a training and validation set. Modify variable names as needed. The input for this was the output from the addClassToTidyTsv.py script.</p>
 <pre class="r"><code>library(tidyverse)
 #Read file
 classFile &lt;- read_tsv(Path to File)
 #Filter for controls only
 controls &lt;- filter(classFile, Class == &quot;CONTROL&quot;)
-#Randomly sample .75 of controls to a test set
-controlsTest &lt;- sample_frac(controls, .75)
+#Randomly sample .75 of controls to a training set
+controlsTrain &lt;- sample_frac(controls, .75)
 #Remaining .25 of controls assigned to val set
-controlsVal &lt;- anti_join(controls, controlsTest)
+controlsVal &lt;- anti_join(controls, controlsTrain)
 #Filter for cases only
 cases &lt;- filter(classFile, Class == &quot;CASE&quot;)
-#Randomly sample .75 of cases to a test set
-casesTest &lt;- sample_frac(cases, .75)
+#Randomly sample .75 of cases to a training set
+casesTrain &lt;- sample_frac(cases, .75)
 #Remaining .25 of controls assigned to val set
-casesVal &lt;- anti_join(cases, casesTest)
-#Combine case and control test sets into a combined test set, and randomize rows
-testSet &lt;- bind_rows(casesTest, controlsTest) %&gt;% sample_frac(1)
+casesVal &lt;- anti_join(cases, casesTrain)
+#Combine case and control training sets into a combined training set, and randomize rows
+trainingSet &lt;- bind_rows(casesTrain, controlsTrain) %&gt;% sample_frac(1)
 #Combine case and control val sets into a combined val set, and randomize rows
 valSet &lt;- bind_rows(casesVal, controlsVal) %&gt;% sample_frac(1)
 #write files
-write_tsv(testSet, output file name and path)
+write_tsv(trainingSet, output file name and path)
 write_tsv(valSet, output file name and path)</code></pre>
 <p>This function will import the ShinyLearner metric file and average accuracy.</p>
 <pre class="r"><code>importSlMetricThenAverageAccuracy &lt;- function(metricFile) {
